@@ -5,16 +5,14 @@ import commonMiddleware from '../lib/commonMiddleware';
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 async function placeBid(event, context) {
-  let auction;
-
   const { id } = event.pathParameters;
   const { amount } = event.body;
 
   const params = {
-    TableName: process.env.AUCTION_TABLE_NAME,
+    TableName: process.env.AUCTIONS_TABLE_NAME,
     Key: { id },
     UpdateExpression: 'set highestBid.amount = :amount',
-    ExpressionAttributesValues: {
+    ExpressionAttributeValues: {
       ':amount': amount,
     },
     ReturnValues: 'ALL_NEW',
